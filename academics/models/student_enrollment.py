@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+from ..constants import MAX_GRADE, MIN_GRADE
 from .semester import Semester
 from .course import Course
 
@@ -15,8 +16,8 @@ class StudentEnrollment(models.Model):
         null=True,
         blank=True,
         validators=[
-            MinValueValidator(0.0),
-            MaxValueValidator(5.0),
+            MinValueValidator(MIN_GRADE),
+            MaxValueValidator(MAX_GRADE),
         ],
         help_text="Final grade for the course (0.0 to 5.0)."
     )

@@ -34,3 +34,14 @@ class IsAdminOrStudent(permissions.BasePermission):
             return False
 
         return request.user.role in [User.Role.ADMIN, User.Role.STUDENT]
+
+class IsAdminOrTeacher(permissions.BasePermission):
+    """
+    Custom permission to allow access only to users with the ADMIN or TEACHER role.
+    """
+
+    def has_permission(self, request, view):
+        if not request.user or not request.user.is_authenticated:
+            return False
+
+        return request.user.role in [User.Role.ADMIN, User.Role.TEACHER]
