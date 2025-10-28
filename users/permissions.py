@@ -12,3 +12,25 @@ class IsAdmin(permissions.BasePermission):
             and request.user.is_authenticated
             and getattr(request.user, "role", None) == User.Role.ADMIN
         )
+
+class IsStudent(permissions.BasePermission):
+    """
+    Custom permission to allow access only to users with the STUDENT role.
+    """
+
+    def has_permission(self, request, view):
+        if not request.user or not request.user.is_authenticated:
+            return False
+
+        return request.user.role == User.Role.STUDENT
+    
+class IsAdminOrStudent(permissions.BasePermission):
+    """
+    Custom permission to allow access only to users with the ADMIN or STUDENT role.
+    """
+
+    def has_permission(self, request, view):
+        if not request.user or not request.user.is_authenticated:
+            return False
+
+        return request.user.role in [User.Role.ADMIN, User.Role.STUDENT]

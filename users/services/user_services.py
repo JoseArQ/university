@@ -1,4 +1,5 @@
 from django.db import transaction
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 
 from ..models import User, StudentProfile, TeacherProfile
 
@@ -54,3 +55,42 @@ def create_user_teacher(username: str, email: str, password: str, **profile_data
 
 def is_email_already_exists(email : str) -> bool:
     return User.objects.filter(email__iexact=email).exists()
+
+def get_user_by_id(user_id: int) -> User:
+    """
+    Retrieve a user instance by its ID.
+
+    Args:
+        user_id (int): The ID of the user to retrieve.
+
+    Returns:
+        User: The retrieved user instance.
+
+    Raises:
+        ValidationError: If the user_id is invalid or the user does not exist.
+    """
+    if not isinstance(user_id, int) or user_id <= 0:
+        raise ValidationError("Invalid user ID provided.")
+
+    try:
+        user = User.objects.get(id=user_id)
+    except ObjectDoesNotExist:
+        raise ValidationError(f"User with id={user_id} does not exist.")
+
+    return user
+
+# --- STUDENTS ---
+
+def list_students() -> list[StudentProfile]:
+    """
+    Retrieve all student profiles.
+    """
+    return list(StudentProfile.objects.select_related("user").all())
+
+# --- TEACHERS ---
+
+def list_teachers() -> list[TeacherProfile]:
+    """
+    Retrieve all teacher profiles.
+    """
+    return list(TeacherProfile.objects.select_related("user").all())
