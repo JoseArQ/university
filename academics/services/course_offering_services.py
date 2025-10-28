@@ -50,3 +50,24 @@ def create_course_offering(teacher: User, semester: Semester, course: Course) ->
     )
 
     return offering
+
+def get_teacher_courses_by_semester(teacher: User, semester: Semester) -> list[CourseOffering]:
+    """
+    Retrieve all course offerings assigned to a specific teacher in a given semester.
+
+    Args:
+        teacher (User): The teacher whose courses will be retrieved.
+        semester (Semester): The semester to filter courses by.
+
+    Returns:
+        QuerySet[CourseOffering]: The list of courses assigned to the teacher.
+
+    Raises:
+        ValidationError: If the user is not a teacher.
+    """
+    if teacher.role != User.Role.TEACHER:
+        raise ValidationError("Only teachers can have assigned courses.")
+
+    return list(
+        CourseOffering.objects.filter(teacher=teacher, semester=semester)
+        )
