@@ -37,3 +37,12 @@ docker compose stop
 ```bash
 docker compose down
 ```
+
+---
+
+## 🌐 Acceso rápido
+
+👉 **Interfaz Swagger para probar la API:**  
+[http://localhost:8000/swagger/](http://localhost:8000/swagger/)
+
+---
