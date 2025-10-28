@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
 LOCAL_INSTALLED_APP = [
     'users',
+    'academics'
 ]
 
 INSTALLED_APPS += LOCAL_INSTALLED_APP
